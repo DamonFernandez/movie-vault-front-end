@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 
-import Login from "./login";
-import SignUp from "./signUp";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
-function loginAndSignUp() {
-  let [showSignUp, setShowSignUp] = useState(false);
+function LoginAndSignUp() {
+  const [showSignUp, setShowSignUp] = useState(false);
 
   function changeShowSignUpFlag() {
     setShowSignUp(!showSignUp);
@@ -31,4 +31,4 @@ function loginAndSignUp() {
   );
 }
 
-export default loginAndSignUp;
+export default LoginAndSignUp;
