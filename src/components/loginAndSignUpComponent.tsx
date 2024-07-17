@@ -13,7 +13,6 @@ function LoginAndSignUp() {
 
   return (
     <>
-      <h1>Movie Vault</h1>
       {showSignUp ? (
         <>
           <h2>Sign Up</h2>
