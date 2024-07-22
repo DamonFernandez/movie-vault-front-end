@@ -1,11 +1,5 @@
-import "../styles/moive-card.css";
-interface Movie {
-    id: number;
-    title: string;
-    year: number;
-    poster: string;
-}
-
+import "../styles/movie-card.css";
+import { Movie } from "../types";
 interface MovieCardProps {
     movie: Movie;
 }
