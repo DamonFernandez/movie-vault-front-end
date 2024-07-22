@@ -1,6 +1,8 @@
 .movie-list {
+    margin: 1em auto;
+    max-width: 85em;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 1rem;
-    margin-top: 1rem;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1.9rem;
+    justify-items: center;
 }

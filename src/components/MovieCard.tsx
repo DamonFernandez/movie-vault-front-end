@@ -7,7 +7,7 @@ interface MovieCardProps {
 export default function MovieCard({ movie }: MovieCardProps) {
     return (
         <div className="movie-card">
-            <img src={movie.poster} alt={movie.title} width={200} />
+            <img src={movie.poster} alt={movie.title} width={185} />
             <div className="movie-info">
                 <h3>{movie.title}</h3>
             </div>
