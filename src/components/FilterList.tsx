@@ -39,7 +39,7 @@ export default function FilterList({ search, setSearch, genres, setGenres, origi
             <div className="sortby">
                 <button onClick={sortByGiven("title")}>Sort by Title</button>
                 <button onClick={sortByGiven("release_date")}>Sort by Release Date</button>
-                <button onClick={sortByGiven("rating")}>Sort by Rating</button>
+                <button onClick={sortByGiven("vote_average")}>Sort by Rating</button>
                 <button onClick={sortByGiven("revert")}> Revert Changes</button>
             </div>
         </section >

@@ -84,9 +84,9 @@ export default function Movies() {
                 startIndex: 0,
                 endIndex: LIMIT,
             });
-        } else if (sortBy === "rating") {
-            // getRatings();
-            const newMovieList = [...movieList].sort((a, b) => b.rating - a.rating);
+        } else if (sortBy === "vote_average") {
+            // getvote_averages();
+            const newMovieList = [...movieList].sort((a, b) => b.vote_average - a.vote_average);
             setMovieList(newMovieList);
             setPagination({
                 page: 1,
@@ -109,37 +109,30 @@ export default function Movies() {
                 .catch((error) => {
                     console.error("Error fetching movies:", error);
                 });
+            setYear('');
+            setGenres(['all']);
+            setoriginal_language('all');
+            setSearch('');
+
         }
     }, [sortBy]);
 
-    // const getRatings = () => {
-    //     // axios.get(`https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/$`)
-    //     //     .then((response) => {
-    //     //         const ratings = response.data;
-    //     //         movieList.forEach((movie) => {
-    //     //             movie.rating = ratings.find((rating) => rating.movieID === movie.movieID)?.rating || 0;
-    //     //         });
-    //     //     })
-    //     //     .catch((error) => {
-    //     //         console.error("Error fetching ratings:", error);
-    //     //     }
-    //     //     );
-    // }
     const nextPage = () => {
         const { page, pageList } = pagination;
-        const newPage = page + 1;
-        const newStartIndex = newPage * LIMIT;
-        const newEndIndex = (newPage + 1) * LIMIT;
+        if (page < Math.ceil(movieList.length / LIMIT) - 1) {
+            const newPage = page + 1;
+            const newStartIndex = newPage * LIMIT;
+            const newEndIndex = (newPage + 1) * LIMIT;
 
-        setPagination({
-            ...pagination,
-            page: newPage,
-            pageList: [...pageList, newPage],
-            startIndex: newStartIndex,
-            endIndex: newEndIndex,
-        });
-
-        setMovies(movieList.slice(newStartIndex, newEndIndex));
+            setPagination({
+                ...pagination,
+                page: newPage,
+                pageList: [...pageList, newPage],
+                startIndex: newStartIndex,
+                endIndex: newEndIndex,
+            });
+            setMovies(movieList.slice(newStartIndex, newEndIndex));
+        }
     };
 
     const prevPage = () => {
@@ -171,9 +164,11 @@ export default function Movies() {
             startIndex: newStartIndex,
             endIndex: newEndIndex,
             page: pageNumber,
+            pageList: pagination.pageList.slice(0, pageNumber),
         });
 
         setMovies(movieList.slice(newStartIndex, newEndIndex));
+
     };
 
     return (

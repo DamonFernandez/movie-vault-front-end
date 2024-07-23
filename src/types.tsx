@@ -4,7 +4,8 @@ export interface Movie {
     title: string;
     release_date: string;
     poster: string;
-    rating: number;
+    vote_average: number;
+    genres: string[];
 }
 //movie card props
 export interface MovieCardProps {
