@@ -6,9 +6,19 @@ import SignUp from "./SignUp";
 
 function LoginAndSignUp() {
   const [showSignUp, setShowSignUp] = useState(false);
+  const [apiKey, setApiKey] = useState("");
 
-  function changeShowSignUpFlag() {
+  // How this works is when api key is an blank string, keep showing this page
+  // Once it changes to not be a blank string, then route to the main page
+  // Have not implmented yet though
+
+  function changeShowSignUpFlag(): void {
     setShowSignUp(!showSignUp);
+  }
+
+  function getApiKey(apiKey: string): void {
+    console.log(apiKey);
+    setApiKey(apiKey);
   }
 
   return (
@@ -22,7 +32,7 @@ function LoginAndSignUp() {
       ) : (
         <>
           <h2>Login</h2>
-          <Login />
+          <Login getApiKey={getApiKey} />
           <button onClick={changeShowSignUpFlag}>Sign Up</button>
         </>
       )}
