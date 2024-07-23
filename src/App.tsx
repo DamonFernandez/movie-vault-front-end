@@ -1,5 +1,5 @@
-import { useState } from "react";
-import MovieCard from "./components/MoiveCard";
+import Movies from "./routes/movies";
+
 import "./styles/App.css";
 import APIContextProvider from "./components/APIContextProvider.tsx";
 import LoginAndSignUp from "./components/LoginAndSignUpComponent.tsx";
