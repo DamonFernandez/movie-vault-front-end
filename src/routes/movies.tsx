@@ -86,85 +86,84 @@ export default function Movies() {
         //         console.error("Error fetching ratings:", error);
         //     }
         //     );
+    }
+    const nextPage = () => {
+        const { page, pageList } = pagination;
+        const newPage = page + 1;
+        const newStartIndex = newPage * LIMIT;
+        const newEndIndex = (newPage + 1) * LIMIT;
 
-        const nextPage = () => {
-            const { page, pageList } = pagination;
-            const newPage = page + 1;
-            const newStartIndex = newPage * LIMIT;
-            const newEndIndex = (newPage + 1) * LIMIT;
+        setPagination({
+            ...pagination,
+            page: newPage,
+            pageList: [...pageList, newPage],
+            startIndex: newStartIndex,
+            endIndex: newEndIndex,
+        });
+
+        setMovies(movieList.slice(newStartIndex, newEndIndex));
+    };
+
+    const prevPage = () => {
+        const { page, pageList } = pagination;
+
+        if (page > 1) {
+            const newPage = page - 1;
+            const newStartIndex = (newPage - 1) * LIMIT;
+            const newEndIndex = newPage * LIMIT;
 
             setPagination({
                 ...pagination,
                 page: newPage,
-                pageList: [...pageList, newPage],
+                pageList: pageList.filter((pageNumber) => pageNumber !== page),
                 startIndex: newStartIndex,
                 endIndex: newEndIndex,
             });
 
             setMovies(movieList.slice(newStartIndex, newEndIndex));
-        };
+        }
+    };
 
-        const prevPage = () => {
-            const { page, pageList } = pagination;
+    const goToPage = (pageNumber: number) => {
+        const newStartIndex = (pageNumber - 1) * LIMIT;
+        const newEndIndex = pageNumber * LIMIT;
 
-            if (page > 1) {
-                const newPage = page - 1;
-                const newStartIndex = (newPage - 1) * LIMIT;
-                const newEndIndex = newPage * LIMIT;
+        setPagination({
+            ...pagination,
+            startIndex: newStartIndex,
+            endIndex: newEndIndex,
+            page: pageNumber,
+        });
 
-                setPagination({
-                    ...pagination,
-                    page: newPage,
-                    pageList: pageList.filter((pageNumber) => pageNumber !== page),
-                    startIndex: newStartIndex,
-                    endIndex: newEndIndex,
-                });
+        setMovies(movieList.slice(newStartIndex, newEndIndex));
+    };
 
-                setMovies(movieList.slice(newStartIndex, newEndIndex));
-            }
-        };
+    return (
+        <div>
+            <NavBar />
+            <FilterList
+                search={search}
+                genre={genre}
+                original_language={original_language}
+                year={year}
+                setSearch={setSearch}
+                setGenre={setGenre}
+                setoriginal_language={setoriginal_language}
+                setYear={setYear}
+                setSortBy={setSortBy}
 
-        const goToPage = (pageNumber: number) => {
-            const newStartIndex = (pageNumber - 1) * LIMIT;
-            const newEndIndex = pageNumber * LIMIT;
-
-            setPagination({
-                ...pagination,
-                startIndex: newStartIndex,
-                endIndex: newEndIndex,
-                page: pageNumber,
-            });
-
-            setMovies(movieList.slice(newStartIndex, newEndIndex));
-        };
-
-        return (
-            <div>
-                <NavBar />
-                <FilterList
-                    search={search}
-                    genre={genre}
-                    original_language={original_language}
-                    year={year}
-                    setSearch={setSearch}
-                    setGenre={setGenre}
-                    setoriginal_language={setoriginal_language}
-                    setYear={setYear}
-                    setSortBy={setSortBy}
-
-                />
-                <MovieList movies={movies} />
-                <div className="pages">
-                    Page{" "}
-                    {pagination.pageList.map((pageNumber, index) => (
-                        <button onClick={() => goToPage(pageNumber)} key={index} style={{ fontWeight: pageNumber === pagination.page ? "bold" : "normal", }}>
-                            {pageNumber}
-                        </button>
-                    ))}
-                </div>
-                <button onClick={nextPage}>Next</button>
-                <button onClick={prevPage}>Previous</button>
+            />
+            <MovieList movies={movies} />
+            <div className="pages">
+                Page{" "}
+                {pagination.pageList.map((pageNumber, index) => (
+                    <button onClick={() => goToPage(pageNumber)} key={index} style={{ fontWeight: pageNumber === pagination.page ? "bold" : "normal", }}>
+                        {pageNumber}
+                    </button>
+                ))}
             </div>
-        );
-    }
+            <button onClick={nextPage}>Next</button>
+            <button onClick={prevPage}>Previous</button>
+        </div>
+    );
 }
