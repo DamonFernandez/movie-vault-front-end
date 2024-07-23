@@ -1,94 +1,102 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
-import { useForm } from "react-hook-form";
+import React, { useContext, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { API_KEY } from "./APIContextProvider";
+import axios, { AxiosError } from "axios";
 
-import axios from "axios";
+interface FormInputs {
+  username: string;
+  password: string;
+}
 
-function Login({ getApiKey }) {
+function Login() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormInputs>();
 
   const usernameValue: string = watch("username") ?? "";
   const passwordValue: string = watch("password") ?? "";
-  // Still need to add styling to tell user what they need to do login is invalid
-  const onSubmit = async (data) => {
-    console.log("Form submitted", data);
 
-    // getApiKey(requestApiKeyFromApi(usernameValue, passwordValue));
-    const apiKey = await requestApiKeyFromApi(usernameValue, passwordValue);
-    console.log(apiKey);
-    getApiKey(apiKey);
+  const { apiKey, setApiKey } = useContext(API_KEY);
+
+  function updateApiKeyState(newApiKey: string) {
+    setApiKey(newApiKey);
+  }
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    console.log("Form submitted", data);
+    try {
+      const apiKey = await requestApiKeyFromApi(data.username, data.password);
+      updateApiKeyState(apiKey);
+    } catch (error) {
+      console.error("Failed to get API key:", error);
+      // Handle the error appropriately, maybe set an error state
+    }
   };
 
   async function requestApiKeyFromApi(
     username: string,
     password: string
   ): Promise<string> {
-    const URL =
-      "https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/apikey?username=test12&password=1234567";
-    const UNAUTH_SERVER_CODE: number = 401;
-    const BAD_SERVER_CODE_START_POINT: number = 299;
+    const URL = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/apikey?username=${username}&password=${password}`;
+
     try {
-      const response = await axios.get(URL, {
+      const response = await axios.get<string>(URL, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       console.log("Status code:", response.status);
-
-      if (response.status === UNAUTH_SERVER_CODE) {
-        throw new Error("Invalid Api Key");
-      } else if (response.status > BAD_SERVER_CODE_START_POINT) {
-        throw new Error(`Bad status code returned: ${response.status}`);
-      }
-
       console.log("Api key obtained");
-      const apiKey = response.data;
-      console.log(apiKey);
-      return apiKey;
+      console.log(response.data);
+      return response.data;
     } catch (error) {
+      const axiosError = error as AxiosError;
       console.log("Error occurred with request:");
-      console.log(error);
+      console.log(axiosError.response?.data);
       throw error;
     }
   }
 
-  useEffect(() => {
+  function validateLogin() {
     if (usernameValue.trim() === "") {
-      console.log("Please enter an username");
+      console.log("Please enter a username");
     }
     if (passwordValue.trim() === "") {
-      console.log("Please enter an password");
+      console.log("Please enter a password");
     }
-  }, [usernameValue, passwordValue]);
+  }
 
-  // console.log(errors);
+  useEffect(() => {
+    console.log("API Key in context now is:", apiKey);
+  }, [apiKey]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="username">Username</label>
       <input
         type="text"
-        // name="username"
         id="username"
         {...register("username", {
           required: "Please enter a username",
         })}
-      ></input>
+      />
+      {errors.username && <p>{errors.username.message}</p>}
+
       <label htmlFor="password">Password</label>
       <input
-        type="text"
-        // name="password"
+        type="password"
         id="password"
         {...register("password", {
-          required: "Please enter an password",
+          required: "Please enter a password",
         })}
-      ></input>
-      <button type="submit" name="loginButon">
+      />
+      {errors.password && <p>{errors.password.message}</p>}
+
+      <button type="submit" name="loginButton" onClick={validateLogin}>
         Login
       </button>
     </form>

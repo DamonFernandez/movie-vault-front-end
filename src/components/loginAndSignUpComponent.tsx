@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-
+import { LoginAndSignUpProps } from "../types";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
 function LoginAndSignUp() {
   const [showSignUp, setShowSignUp] = useState(false);
-  const [apiKey, setApiKey] = useState("");
+  // const [apiKey, setApiKey] = useState("");
 
   // How this works is when api key is an blank string, keep showing this page
   // Once it changes to not be a blank string, then route to the main page
@@ -14,11 +14,6 @@ function LoginAndSignUp() {
 
   function changeShowSignUpFlag(): void {
     setShowSignUp(!showSignUp);
-  }
-
-  function getApiKey(apiKey: string): void {
-    console.log(apiKey);
-    setApiKey(apiKey);
   }
 
   return (
@@ -32,7 +27,7 @@ function LoginAndSignUp() {
       ) : (
         <>
           <h2>Login</h2>
-          <Login getApiKey={getApiKey} />
+          <Login />
           <button onClick={changeShowSignUpFlag}>Sign Up</button>
         </>
       )}

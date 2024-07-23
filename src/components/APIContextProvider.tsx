@@ -2,12 +2,16 @@
 import React from "react";
 import { useState } from "react";
 
-const API_KEY = React.createContext({
+import { createContext } from "react";
+
+const API_KEY = createContext({
   apiKey: "No key provided yet",
-  setApiKey: (key: string) => {},
+  setApiKey: (key: string) => {
+    console.log("no state function defined for this context yet");
+  },
 });
 
-function ContextProvider({ children }) {
+function APIContextProvider({ children }) {
   const [apiKey, setApiKey] = useState("No key provided yet");
 
   return (
@@ -17,4 +21,4 @@ function ContextProvider({ children }) {
   );
 }
 
-export default ContextProvider;
+export { API_KEY, APIContextProvider };
