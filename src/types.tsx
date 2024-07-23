@@ -2,7 +2,7 @@
 export interface Movie {
     movieID: number;
     title: string;
-    year: number;
+    release_date: string;
     poster: string;
     rating: number;
 }
@@ -15,8 +15,8 @@ export interface MovieCardProps {
 export interface FilterListProps {
     search: string;
     setSearch: (search: string) => void;
-    genre: string;
-    setGenre: (genre: string) => void;
+    genres: string[];
+    setGenres: (genres: string[]) => void;
     original_language: string;
     setoriginal_language: (original_language: string) => void;
     year: string;

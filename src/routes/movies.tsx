@@ -19,7 +19,7 @@ export default function Movies() {
     });
 
     const [search, setSearch] = useState('');
-    const [genre, setGenre] = useState('all');
+    const [genres, setGenres] = useState(['all']);
     const [original_language, setoriginal_language] = useState('all');
     const [year, setYear] = useState('');
 
@@ -43,8 +43,8 @@ export default function Movies() {
 
     useEffect(() => {
         let uri = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/?title=${search}&release_date=${year}`;
-        if (genre !== "all") {
-            uri += `&genres=${genre}`;
+        if (genres.find((genre) => genre === "all") === undefined) {
+            uri += `&genres=${genres.join(" ")}`;
         }
         if (original_language !== "all") {
             uri += `&original_language=${original_language}`;
@@ -62,31 +62,69 @@ export default function Movies() {
             .catch((error) => {
                 console.error("Error fetching movies:", error);
             });
-    }, [search, genre, original_language, year]);
+    }, [search, genres, original_language, year]);
 
     useEffect(() => {
         if (sortBy === "title") {
-            setMovieList(movieList.sort((a, b) => a.title.localeCompare(b.title)));
+            console.log("sorting by title");
+            const newMovieList = [...movieList].sort((a, b) => a.title.localeCompare(b.title));
+            setMovieList(newMovieList);
+            setPagination({
+                page: 1,
+                pageList: [1],
+                startIndex: 0,
+                endIndex: LIMIT,
+            });
         } else if (sortBy === "release_date") {
-            setMovieList(movieList.sort((a, b) => a.year - b.year));
+            const newMovieList = [...movieList].sort((a, b) => a.release_date.localeCompare(b.release_date));
+            setMovieList(newMovieList);
+            setPagination({
+                page: 1,
+                pageList: [1],
+                startIndex: 0,
+                endIndex: LIMIT,
+            });
         } else if (sortBy === "rating") {
-            getRatings();
-            setMovieList(movieList.sort((a, b) => b.rating - a.rating));
+            // getRatings();
+            const newMovieList = [...movieList].sort((a, b) => b.rating - a.rating);
+            setMovieList(newMovieList);
+            setPagination({
+                page: 1,
+                pageList: [1],
+                startIndex: 0,
+                endIndex: LIMIT,
+            });
+        }
+        else if (sortBy === "revert") {
+            axios.get("https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/")
+                .then((response) => {
+                    setMovieList(response.data);
+                    setPagination({
+                        page: 1,
+                        pageList: [1],
+                        startIndex: 0,
+                        endIndex: LIMIT,
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching movies:", error);
+                });
         }
     }, [sortBy]);
-    const getRatings = () => {
-        // axios.get(`https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/$`)
-        //     .then((response) => {
-        //         const ratings = response.data;
-        //         movieList.forEach((movie) => {
-        //             movie.rating = ratings.find((rating) => rating.movieID === movie.movieID)?.rating || 0;
-        //         });
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error fetching ratings:", error);
-        //     }
-        //     );
-    }
+
+    // const getRatings = () => {
+    //     // axios.get(`https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/$`)
+    //     //     .then((response) => {
+    //     //         const ratings = response.data;
+    //     //         movieList.forEach((movie) => {
+    //     //             movie.rating = ratings.find((rating) => rating.movieID === movie.movieID)?.rating || 0;
+    //     //         });
+    //     //     })
+    //     //     .catch((error) => {
+    //     //         console.error("Error fetching ratings:", error);
+    //     //     }
+    //     //     );
+    // }
     const nextPage = () => {
         const { page, pageList } = pagination;
         const newPage = page + 1;
@@ -143,11 +181,11 @@ export default function Movies() {
             <NavBar />
             <FilterList
                 search={search}
-                genre={genre}
+                genres={genres}
                 original_language={original_language}
                 year={year}
                 setSearch={setSearch}
-                setGenre={setGenre}
+                setGenres={setGenres}
                 setoriginal_language={setoriginal_language}
                 setYear={setYear}
                 setSortBy={setSortBy}
@@ -155,15 +193,19 @@ export default function Movies() {
             />
             <MovieList movies={movies} />
             <div className="pages">
-                Page{" "}
-                {pagination.pageList.map((pageNumber, index) => (
-                    <button onClick={() => goToPage(pageNumber)} key={index} style={{ fontWeight: pageNumber === pagination.page ? "bold" : "normal", }}>
-                        {pageNumber}
-                    </button>
-                ))}
+                <div className="pageQueue">
+                    Page
+                    {pagination.pageList.map((pageNumber, index) => (
+                        <button onClick={() => goToPage(pageNumber)} key={index} style={{ fontWeight: pageNumber === pagination.page ? "bold" : "normal", }}>
+                            {pageNumber}
+                        </button>
+                    ))}
+                </div>
+                <div className="page-nav-btns">
+                    <button onClick={nextPage}>Next</button>
+                    <button onClick={prevPage}>Previous</button>
+                </div>
             </div>
-            <button onClick={nextPage}>Next</button>
-            <button onClick={prevPage}>Previous</button>
         </div>
     );
 }
