@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
-import { LoginAndSignUpProps } from "../types";
+import { useState } from "react";
+
 import Login from "./Login";
 import SignUp from "./SignUp";
 

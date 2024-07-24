@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { API_KEY } from "./APIContextProvider";
 import axios, { AxiosError } from "axios";

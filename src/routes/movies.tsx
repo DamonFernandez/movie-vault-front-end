@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 import MovieList from "../components/MovieList.tsx";
 import FilterList from "../components/FilterList.tsx";
-import axios from "axios";
+import NavBar from "../components/NavBar.tsx";
+import { API_KEY } from "../components/APIContextProvider.tsx";
+import { useContext } from "react";
 import { Movie } from "../types.tsx";
 import "../styles/movies.css";
-import NavBar from "../components/NavBar.tsx";
 
 export default function Movies() {
     const LIMIT = 48;
@@ -25,11 +28,13 @@ export default function Movies() {
 
     const [sortBy, setSortBy] = useState('');
 
+    const apiKey = useContext(API_KEY);
 
     useEffect(() => {
         axios.get("https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/")
             .then((response) => {
                 setMovieList(response.data);
+                console.log(apiKey);
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);

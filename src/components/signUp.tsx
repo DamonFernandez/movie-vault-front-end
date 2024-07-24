@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
 import { useForm } from "react-hook-form";
 
 function SignUp() {
@@ -11,7 +9,7 @@ function SignUp() {
 
   console.log(errors);
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data);
   };
 
