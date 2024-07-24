@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import MovieList from "../components/MovieList.tsx";
-import FilterList from "../components/FilterList.tsx";
-import NavBar from "../components/NavBar.tsx";
-import { API_KEY } from "../components/APIContextProvider.tsx";
+import MovieList from "../MovieList.tsx";
+import FilterList from "../FilterList.tsx";
+import NavBar from "../NavBar.tsx";
+import { API_KEY } from "../APIContextProvider.tsx";
 import { useContext } from "react";
-import { Movie } from "../types.tsx";
-import "../styles/movies.css";
+import { Movie } from "../../types.tsx";
+import "../../styles/movies.css"
+import { Navigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Movies() {
+    const navigate = useNavigate();
+    const apiKey = useContext(API_KEY);
+    useEffect(() => {
+        console.log("API key in movies:", apiKey);
+    }, [apiKey, navigate]);
     const LIMIT = 48;
 
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -28,7 +35,7 @@ export default function Movies() {
 
     const [sortBy, setSortBy] = useState('');
 
-    const apiKey = useContext(API_KEY);
+
 
     useEffect(() => {
         axios.get("https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/")

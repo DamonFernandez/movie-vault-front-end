@@ -1,6 +1,7 @@
 import "../styles/movie-card.css";
 import { useEffect, useState } from "react";
 import { Movie } from "../types";
+import { Link } from "react-router-dom";
 interface MovieCardProps {
     movie: Movie;
 }
@@ -12,14 +13,17 @@ export default function MovieCard({ movie }: MovieCardProps) {
 
         <div className="movie-card"
         >
-            <img src={movie.poster} alt={movie.title} width={185} onMouseEnter={
-                () => {
-                    setMouseIn(true);
-                }}
-                onMouseLeave={
+            <Link to={"/movie/" + movie.movieID}>
+                <img src={movie.poster} alt={movie.title} width={185} onMouseEnter={
                     () => {
-                        setMouseIn(false);
-                    }} />
+                        setMouseIn(true);
+                    }}
+                    onMouseLeave={
+                        () => {
+                            setMouseIn(false);
+                        }}
+                />
+            </Link>
             <h3>{movie.title}</h3>
             <button className="quickAddBtn">+ToWatch</button>
             <button className="quickAddBtn">+Complete</button>

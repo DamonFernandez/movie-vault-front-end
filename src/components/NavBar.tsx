@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 export default function NavBar() {
     return (
         <nav className="navbar">
@@ -7,17 +9,16 @@ export default function NavBar() {
             </div>
 
             <div className="navbar__menu">
-                <ul>
-                    <li>Home</li>
-                    <li>Movies</li>
-                    <li>Movie-To Watch List</li>
-                    <li>Movie-Completed Watch List</li>
-                </ul>
+
+                <NavLink to={"/"}>Home</NavLink>
+                <NavLink to={"/movies"}>Movies</NavLink>
+                <NavLink to={"/towatchlist"}>Movie-To Watch List</NavLink>
+                <NavLink to={"/completedwatchlist"}>Movie-Completed Watch List</NavLink>
+
             </div>
 
             <div className="loginSignUp">
-                <button>Login</button>
-                <button>Sign Up</button>
+                <NavLink to={"/login"}>Login</NavLink>
             </div>
 
         </nav >

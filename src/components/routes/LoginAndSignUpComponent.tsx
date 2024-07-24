@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "../Login";
+import SignUp from "../SignUp";
+import NavBar from "../NavBar";
 
 function LoginAndSignUp() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -17,6 +18,7 @@ function LoginAndSignUp() {
 
   return (
     <>
+      <NavBar />
       {showSignUp ? (
         <>
           <h2>Sign Up</h2>

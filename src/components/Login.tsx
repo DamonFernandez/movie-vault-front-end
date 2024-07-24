@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { API_KEY } from "./APIContextProvider";
 import axios, { AxiosError } from "axios";
+import { Navigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface FormInputs {
   username: string;
@@ -15,13 +17,14 @@ function Login() {
     watch,
     formState: { errors },
   } = useForm<FormInputs>();
-
+  const navigate = useNavigate();
   const usernameValue: string = watch("username") ?? "";
   const passwordValue: string = watch("password") ?? "";
 
   const { apiKey, setApiKey } = useContext(API_KEY);
 
   function updateApiKeyState(newApiKey: string) {
+    console.log("Updating API key in context to:", newApiKey);
     setApiKey(newApiKey);
   }
 
@@ -30,6 +33,15 @@ function Login() {
     try {
       const apiKey = await requestApiKeyFromApi(data.username, data.password);
       updateApiKeyState(apiKey);
+      console.log("API key obtained:", apiKey);
+      try {
+        console.log("Redirecting to movies page");
+        navigate("/movies");
+
+      } catch (error) {
+        console.error("Failed to redirect to movies page:", error);
+
+      }
     } catch (error) {
       console.error("Failed to get API key:", error);
       // Handle the error appropriately, maybe set an error state

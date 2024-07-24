@@ -6,9 +6,7 @@ import { createContext } from "react";
 
 const API_KEY = createContext({
   apiKey: "No key provided yet",
-  setApiKey: (key: string) => {
-    console.log("no state function defined for this context yet");
-  },
+  setApiKey: (key: string) => { },
 });
 
 function APIContextProvider({ children }) {
