@@ -4,19 +4,24 @@ import axios from "axios";
 import MovieList from "../MovieList.tsx";
 import FilterList from "../FilterList.tsx";
 import NavBar from "../NavBar.tsx";
-import { API_KEY } from "../APIContextProvider.tsx";
+
 import { useContext } from "react";
 import { Movie } from "../../types.tsx";
 import "../../styles/movies.css"
 import { Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { APIContext } from "../APIContextProvider.tsx";
 
 export default function Movies() {
     const navigate = useNavigate();
-    const apiKey = useContext(API_KEY);
+    const apiContext = useContext(APIContext);
+    console.log("API key in movies:", apiContext.apiKey);
     useEffect(() => {
-        console.log("API key in movies:", apiKey);
-    }, [apiKey, navigate]);
+        if (apiContext.apiKey === "") {
+            console.log("No key provided yet");
+            navigate("/login");
+        }
+    }, [apiContext.apiKey]);
     const LIMIT = 48;
 
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -41,7 +46,7 @@ export default function Movies() {
         axios.get("https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/movies/")
             .then((response) => {
                 setMovieList(response.data);
-                console.log(apiKey);
+
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);

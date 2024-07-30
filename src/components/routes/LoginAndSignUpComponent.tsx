@@ -4,6 +4,7 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import NavBar from "../NavBar";
 
+
 function LoginAndSignUp() {
   const [showSignUp, setShowSignUp] = useState(false);
   // const [apiKey, setApiKey] = useState("");

@@ -11,37 +11,40 @@ const routes = [
         path: "/",
         element: <App />,
         errorComponent: Error,
-    },
-    {
-        path: "/movies",
-        element: <Movies />,
-        errorComponent: Error,
-    },
-    {
-        path: "/login",
-        element: <LoginAndSignUp />,
-        errorComponent: Error,
-    },
-    {
-        path: "/signup",
-        element: <LoginAndSignUp />,
-        errorComponent: Error,
-    },
-    {
-        path: "/completedwatchlist",
-        element: <CompletedWatchList />,
-        errorComponent: Error,
-    },
-    {
-        path: "/toWatchList",
-        element: <ToWatchList />,
-        errorComponent: Error,
-    },
-    {
-        path: "/movie/:id",
-        element: <Movie />,
-        errorComponent: Error,
-    },
+        children: [
+            {
+                index: true,
+                element: <Movies />,
+                errorComponent: Error,
+            },
+            {
+                path: "/login",
+                element: <LoginAndSignUp />,
+                errorComponent: Error,
+            },
+            {
+                path: "/signup",
+                element: <LoginAndSignUp />,
+                errorComponent: Error,
+            },
+            {
+                path: "/completedwatchlist",
+                element: <CompletedWatchList />,
+                errorComponent: Error,
+            },
+            {
+                path: "/toWatchList",
+                element: <ToWatchList />,
+                errorComponent: Error,
+            },
+            {
+                path: "/movie/:id",
+                element: <Movie />,
+                errorComponent: Error,
+            },
+        ]
+    }
+
 ];
 
 export default routes;
