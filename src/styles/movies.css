@@ -1,12 +1,4 @@
-.pages {
-    padding: 1em;
-}
-
-.pages span {
-    margin-right: 0.2em;
-}
-
-.navbar {
+.filters-section {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -16,14 +8,44 @@
     margin-right: 6em;
 }
 
-nav ul {
+.filters-section .filters {
     display: flex;
     flex-direction: row;
-    list-style-type: none;
-    padding: 1em;
-    margin: 1em;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+    margin-left: 6em;
+    margin-right: 6em;
 }
 
-nav ul li {
-    margin-right: 1em;
+.pages {
+    padding: 1em;
+}
+
+.pages .pageQueue {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    margin-left: 6em;
+    margin-right: 6em;
+}
+
+.pages .pageQueue button {
+    margin: 0.5em
+}
+
+.pages .page-nav-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    margin-left: 6em;
+    margin-right: 6em;
+}
+
+.pages .page-nav-btns button {
+    margin: 0.5em
 }

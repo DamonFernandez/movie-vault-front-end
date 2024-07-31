@@ -1,24 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
-import { useState } from "react";
+// import React from "react";
+// import { useState } from "react";
 
 import { createContext } from "react";
+const APIContext = createContext<{}>({});
 
-const API_KEY = createContext({
-  apiKey: "No key provided yet",
-  setApiKey: (key: string) => {
-    console.log("no state function defined for this context yet");
-  },
-});
 
-function APIContextProvider({ children }) {
-  const [apiKey, setApiKey] = useState("No key provided yet");
+// function APIContextProvider({ children }) {
+//   const [apiKey, setApiKey] = useState<string | null>(null);
+//   return (
+//     <API_KEY.Provider value={{ apiKey, setApiKey }}>
+//       {children}
+//     </API_KEY.Provider>
+//   );
+// }
 
-  return (
-    <API_KEY.Provider value={{ apiKey, setApiKey }}>
-      {children}
-    </API_KEY.Provider>
-  );
-}
-
-export { API_KEY, APIContextProvider };
+export { APIContext };
+// export { API_KEY, APIContextProvider };

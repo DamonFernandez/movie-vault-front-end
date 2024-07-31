@@ -2,8 +2,8 @@ import { FilterListProps } from "../types";
 export default function FilterList({
   search,
   setSearch,
-  genre,
-  setGenre,
+  genres,
+  setGenres,
   original_language,
   setoriginal_language,
   year,
@@ -11,12 +11,13 @@ export default function FilterList({
   setSortBy,
 }: FilterListProps) {
   const sortByGiven = (key: string) => () => {
+    console.log(key);
     setSortBy(key);
   };
   return (
-    <div className="FiltersTab">
+    <section className="filters-section">
       <div className="filters">
-        Year:
+        <label htmlFor="year">Year:</label>
         <input
           type="number"
           value={year}
@@ -24,7 +25,7 @@ export default function FilterList({
             setYear(e.target.value);
           }}
         />
-        Search:
+        <label htmlFor="search">Search:</label>
         <input
           type="text"
           value={search}
@@ -32,8 +33,16 @@ export default function FilterList({
             setSearch(e.target.value);
           }}
         />
-        Genres:
-        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+        <label htmlFor="genre">Genres:</label>
+        <select
+          multiple
+          value={genres}
+          onChange={(e) =>
+            setGenres(
+              Array.from(e.target.selectedOptions, (option) => option.value)
+            )
+          }
+        >
           <option value="all">All</option>
           <option value="action">Action</option>
           <option value="comedy">Comedy</option>
@@ -41,7 +50,7 @@ export default function FilterList({
           <option value="horror">Horror</option>
           <option value="romance">Romance</option>
         </select>
-        Language
+        <label htmlFor="">Language:</label>
         <select
           value={original_language}
           onChange={(e) => setoriginal_language(e.target.value)}
@@ -58,9 +67,12 @@ export default function FilterList({
       </div>
       <div className="sortby">
         <button onClick={sortByGiven("title")}>Sort by Title</button>
-        <button>Sort by Release Date</button>
-        <button>Sort by Rating</button>
+        <button onClick={sortByGiven("release_date")}>
+          Sort by Release Date
+        </button>
+        <button onClick={sortByGiven("vote_average")}>Sort by Rating</button>
+        <button onClick={sortByGiven("revert")}> Revert Changes</button>
       </div>
-    </div>
+    </section>
   );
 }
