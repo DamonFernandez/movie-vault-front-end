@@ -25,7 +25,6 @@ function LoginAndSignUp() {
         </>
       ) : (
         <>
-          <h2>Login</h2>
           <Login />
           <button onClick={changeShowSignUpFlag}>Sign Up</button>
         </>

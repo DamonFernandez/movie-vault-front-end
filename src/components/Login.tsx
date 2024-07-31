@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { API_KEY } from "./APIContextProvider";
 import axios, { AxiosError } from "axios";
+import "../styles/Login.css";
 
 interface FormInputs {
   username: string;
@@ -75,31 +76,40 @@ function Login() {
   }, [apiKey]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        {...register("username", {
-          required: "Please enter a username",
-        })}
-      />
-      {errors.username && <p>{errors.username.message}</p>}
+    <section>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <label htmlFor="username">Username</label> */}
+        <div>
+          <input
+            placeholder="Username"
+            type="text"
+            id="username"
+            {...register("username", {
+              required: "Please enter a username",
+            })}
+          />
+          {errors.username && <p>{errors.username.message}</p>}
+        </div>
 
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        {...register("password", {
-          required: "Please enter a password",
-        })}
-      />
-      {errors.password && <p>{errors.password.message}</p>}
+        <div>
+          {/* <label htmlFor="password">Password</label> */}
+          <input
+            placeholder="Password"
+            type="password"
+            id="password"
+            {...register("password", {
+              required: "Please enter a password",
+            })}
+          />
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
 
-      <button type="submit" name="loginButton" onClick={validateLogin}>
-        Login
-      </button>
-    </form>
+        <button type="submit" name="loginButton" onClick={validateLogin}>
+          Login
+        </button>
+      </form>
+    </section>
   );
 }
 
