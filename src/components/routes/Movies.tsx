@@ -3,7 +3,6 @@ import axios from "axios";
 
 import MovieList from "../MovieList.tsx";
 import FilterList from "../FilterList.tsx";
-import NavBar from "../NavBar.tsx";
 
 import { useContext } from "react";
 import { Movie } from "../../types.tsx";
@@ -190,7 +189,6 @@ export default function Movies() {
 
     return (
         <div>
-            <NavBar />
             <FilterList
                 search={search}
                 genres={genres}

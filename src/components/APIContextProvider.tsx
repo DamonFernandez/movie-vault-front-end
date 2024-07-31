@@ -3,13 +3,11 @@
 // import { useState } from "react";
 
 import { createContext } from "react";
-
-const APIContext = createContext({})
+const APIContext = createContext<{}>({});
 
 
 // function APIContextProvider({ children }) {
 //   const [apiKey, setApiKey] = useState<string | null>(null);
-
 //   return (
 //     <API_KEY.Provider value={{ apiKey, setApiKey }}>
 //       {children}

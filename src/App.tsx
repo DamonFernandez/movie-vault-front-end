@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 import "./styles/App.css";
 import { APIContext } from "./components/APIContextProvider.tsx";
 import LoginAndSignUp from "./components/routes/LoginAndSignUpComponent.tsx";
+import NavBar from "./components/NavBar.tsx";
 import { useContext, useState } from "react";
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
   // console.log("API key in app:", apiKey);
   return (
     <APIContext.Provider value={{ apiKey, setApiKey }}>
-      <h1>hi</h1>
+      <NavBar />
       <Outlet />
     </APIContext.Provider>
   );

@@ -11,15 +11,14 @@ export default function NavBar() {
             <div className="navbar__menu">
 
                 <NavLink to={"/"}>Home</NavLink>
-                <NavLink to={"/movies"}>Movies</NavLink>
                 <NavLink to={"/towatchlist"}>Movie-To Watch List</NavLink>
                 <NavLink to={"/completedwatchlist"}>Movie-Completed Watch List</NavLink>
 
             </div>
-
+            {/* 
             <div className="loginSignUp">
                 <NavLink to={"/login"}>Login</NavLink>
-            </div>
+            </div> */}
 
         </nav >
     )

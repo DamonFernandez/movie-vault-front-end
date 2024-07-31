@@ -9,7 +9,6 @@ import App from "../../App";
 const routes = [
     {
         path: "/",
-        element: <App />,
         errorComponent: Error,
         children: [
             {
