@@ -16,7 +16,7 @@ export default function Movies() {
     const apiContext = useContext(APIContext);
     console.log("API key in movies:", apiContext.apiKey);
     useEffect(() => {
-        if (apiContext.apiKey === "") {
+        if (apiContext.apiKey == undefined || apiContext.apiKey == "") {
             console.log("No key provided yet");
             navigate("/login");
         }

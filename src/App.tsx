@@ -6,14 +6,14 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
-import "./styles/App.css";
+import "./index.css";
 import { APIContext } from "./components/APIContextProvider.tsx";
 import LoginAndSignUp from "./components/routes/LoginAndSignUpComponent.tsx";
 import NavBar from "./components/NavBar.tsx";
 import { useContext, useState } from "react";
 
 function App() {
-  const [apiKey, setApiKey] = useState<string>("");
+  const [apiKey, setApiKey] = useState("");
   // const apiKey = useContext(API_KEY);
   // console.log("API key in app:", apiKey);
   return (

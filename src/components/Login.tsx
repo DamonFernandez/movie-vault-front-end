@@ -21,8 +21,10 @@ function Login() {
   const navigate = useNavigate();
   const usernameValue: string = watch("username") ?? "";
   const passwordValue: string = watch("password") ?? "";
-
   const { apiKey, setApiKey } = useContext(APIContext);
+
+
+  console.log(apiKey)
 
   function updateApiKeyState(newApiKey: string) {
     console.log("Updating API key in context to:", newApiKey);
@@ -39,7 +41,7 @@ function Login() {
         console.log("Redirecting to App page");
         navigate("/");
       } catch (error) {
-        console.error("Failed to redirect to movies page:", error);
+        console.error("Failed to redirect to app page:", error);
       }
     } catch (error) {
       console.error("Failed to get API key:", error);
