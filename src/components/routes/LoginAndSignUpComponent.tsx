@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Login from "../Login";
 import SignUp from "../SignUp";
-import NavBar from "../NavBar";
+
 
 
 function LoginAndSignUp() {
@@ -19,7 +19,6 @@ function LoginAndSignUp() {
 
   return (
     <>
-      <NavBar />
       {showSignUp ? (
         <>
           <h2>Sign Up</h2>
