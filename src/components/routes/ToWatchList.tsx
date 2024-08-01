@@ -79,11 +79,6 @@ function ToWatchList({}) {
     if (!newPriority) return;
 
     try {
-      console.log("LOOK HERE !");
-
-      console.log(
-        `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}`
-      );
       await axios.patch(
         `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}&?user`,
         { priority: newPriority },
