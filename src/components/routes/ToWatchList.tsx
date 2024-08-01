@@ -8,6 +8,7 @@ function ToWatchList({}) {
   const { apiKey, setApiKey } = useContext(APIContext);
   const [movies, setMovies] = useState([]);
   const [sorted, setSorted] = useState(false);
+  const [priorities, setPriorities] = useState({});
   const naviagte = useNavigate();
 
   const sortMoviesByPriority = (movies) => {
@@ -18,7 +19,7 @@ function ToWatchList({}) {
 
   // setApiKey("90c714fc3d83ff7917a843fa94111761d8ece19dc372f7b984d82eab596e2f50");
 
-  // DEF CHANGE THIS URL^^
+  // DEF CHANGE THIS URL_TO_GET_TO_WATCH_LIST_ENTRIES^^
 
   // const { apiKey } = useContext(APIContext);
   // console.log(apiKey);
@@ -38,29 +39,68 @@ function ToWatchList({}) {
       naviagte("/");
     }
   }, [apiKey, sorted]);
-  const URL = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey.apiKey}`;
+  const URL_TO_GET_TO_WATCH_LIST_ENTRIES = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey}`;
+  const URL_TO_UPDATE_PRIORITY = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries`;
+
+  // 3/3?x-api-key=`
 
   const retrieveMoviesToWatch = async (apiKey, sorted = false) => {
     try {
-      const response = await axios.get(URL_FOR_TO_WATCH_LIST_ENTRIES, {
+      const response = await axios.get(URL_TO_GET_TO_WATCH_LIST_ENTRIES, {
         headers: {
           "Content-Type": "application/json",
+          // "x-api-key": apiKey,
         },
       });
       const respMovies = response.data;
 
       sorted && sortMoviesByPriority(respMovies);
-      setMovies(response.data);
-      // addMovieNamesToMoviesToWatchObj();
+      setMovies(respMovies);
 
-      console.log("lOOK HJERE");
+      // Reset priorities state
+      const newPriorities = {};
+      respMovies.forEach((movie) => {
+        newPriorities[movie.toWatchListID] = movie.priority;
+      });
+      setPriorities(newPriorities);
 
-      console.log(movies);
+      console.log("Movies retrieved:", respMovies);
     } catch (error) {
       console.error("Error occurred with request:", error);
     }
   };
 
+  const handlePriorityChange = (toWatchListID, value) => {
+    setPriorities((prev) => ({ ...prev, [toWatchListID]: value }));
+  };
+
+  const updatePriority = async (toWatchListID) => {
+    const newPriority = priorities[toWatchListID];
+    if (!newPriority) return;
+
+    try {
+      console.log("LOOK HERE !");
+
+      console.log(
+        `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}`
+      );
+      await axios.patch(
+        `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}&?user`,
+        { priority: newPriority },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "x-api-key": apiKey,
+          },
+        }
+      );
+
+      // Re-fetch the movies to update the local state
+      await retrieveMoviesToWatch(apiKey, sorted);
+    } catch (error) {
+      console.error("Error updating priority:", error);
+    }
+  };
   return (
     <main>
       <h2> To Watch List</h2>
@@ -82,8 +122,21 @@ function ToWatchList({}) {
           {movies.map((movie) => (
             <tr key={movie.toWatchListID}>
               <td>{movie.title}</td>
-              <td>{movie.priority}</td>
+              <td>
+                <input
+                  type="number"
+                  value={priorities[movie.toWatchListID] || movie.priority}
+                  onChange={(e) =>
+                    handlePriorityChange(movie.toWatchListID, e.target.value)
+                  }
+                />
+              </td>
               <td>{movie.notes}</td>
+              <td>
+                <button onClick={() => updatePriority(movie.toWatchListID)}>
+                  Update Priority
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
