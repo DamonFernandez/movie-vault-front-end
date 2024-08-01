@@ -2,8 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { APIContext } from "../APIContextProvider";
 import { useNavigate } from "react-router-dom";
-// import "../../styles/";
-
+import "../../styles/completedWatchList.css";
 function CompletedWatchList() {
   const { apiKey, setApiKey } = useContext(APIContext);
   const [movies, setMovies] = useState([]);

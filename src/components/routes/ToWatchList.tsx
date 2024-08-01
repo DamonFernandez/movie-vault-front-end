@@ -109,11 +109,6 @@ function ToWatchList({}) {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td> MYHERO</td>
-            <td> 1</td>
-            <td> LOVED IT!</td>
-          </tr>
           {movies.map((movie) => (
             <tr key={movie.toWatchListID}>
               <td>{movie.title}</td>
