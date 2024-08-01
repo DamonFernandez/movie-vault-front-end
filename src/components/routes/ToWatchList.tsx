@@ -49,7 +49,6 @@ function ToWatchList({}) {
       const response = await axios.get(URL_TO_GET_TO_WATCH_LIST_ENTRIES, {
         headers: {
           "Content-Type": "application/json",
-          // "x-api-key": apiKey,
         },
       });
       const respMovies = response.data;
@@ -57,10 +56,12 @@ function ToWatchList({}) {
       sorted && sortMoviesByPriority(respMovies);
       setMovies(respMovies);
 
-      // Reset priorities state
-      const newPriorities = {};
+      // Preserve local changes to priorities
+      const newPriorities = { ...priorities };
       respMovies.forEach((movie) => {
-        newPriorities[movie.toWatchListID] = movie.priority;
+        if (!newPriorities[movie.toWatchListID]) {
+          newPriorities[movie.toWatchListID] = movie.priority;
+        }
       });
       setPriorities(newPriorities);
 
@@ -71,7 +72,7 @@ function ToWatchList({}) {
   };
 
   const handlePriorityChange = (toWatchListID, value) => {
-    setPriorities((prev) => ({ ...prev, [toWatchListID]: value }));
+    setPriorities((prev) => ({ ...prev, [toWatchListID]: parseInt(value) }));
   };
 
   const updatePriority = async (toWatchListID) => {
@@ -79,19 +80,29 @@ function ToWatchList({}) {
     if (!newPriority) return;
 
     try {
-      await axios.patch(
-        `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}&?user`,
-        { priority: newPriority },
+      const response = await axios.patch(
+        `${URL_TO_UPDATE_PRIORITY}/${toWatchListID}/priority?x-api-key=${apiKey}`,
+        { priority: parseInt(newPriority) }, // Ensure priority is sent as a number
         {
           headers: {
             "Content-Type": "application/json",
-            // "x-api-key": apiKey,
           },
         }
       );
 
-      // Re-fetch the movies to update the local state
-      await retrieveMoviesToWatch(apiKey, sorted);
+      if (response.status === 200) {
+        console.log("Priority updated successfully");
+        // Update local state
+        setMovies(
+          movies.map((movie) =>
+            movie.toWatchListID === toWatchListID
+              ? { ...movie, priority: parseInt(newPriority) }
+              : movie
+          )
+        );
+      } else {
+        console.error("Failed to update priority:", response);
+      }
     } catch (error) {
       console.error("Error updating priority:", error);
     }
@@ -123,7 +134,10 @@ function ToWatchList({}) {
               </td>
               <td>{movie.notes}</td>
               <td>
-                <button onClick={() => updatePriority(movie.toWatchListID)}>
+                <button
+                  type="button"
+                  onClick={() => updatePriority(movie.toWatchListID)}
+                >
                   Update Priority
                 </button>
               </td>

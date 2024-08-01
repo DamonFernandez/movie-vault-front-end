@@ -11,6 +11,8 @@ interface FormInputs {
   password: string;
 }
 
+alert("use the following creds to login: username: test, password: test1234");
+
 function Login() {
   const {
     register,
@@ -22,9 +24,6 @@ function Login() {
   const usernameValue: string = watch("username") ?? "";
   const passwordValue: string = watch("password") ?? "";
   const { apiKey, setApiKey, userID, setUserID } = useContext(APIContext);
-
-
-  console.log(apiKey)
 
   function updateApiKeyState(newApiKey: string, newUserID: number) {
     console.log("Updating API key in context to:", newApiKey);
