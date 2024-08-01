@@ -11,15 +11,15 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
-    const navigate = useNavigate();
-    const { apiKey, userID } = useContext(APIContext);
-    if (!apiKey) {
-        navigate("/");
-    }
+    // const navigate = useNavigate();
+    // const { apiKey, userID } = useContext(APIContext);
+    // if (!apiKey) {
+    //     navigate("/");
+    // }
 
-    const quickAddToWatchList = () => {
-        addToWatchList(movie.movieID, userID, 3, "");
-    }
+    // const quickAddToWatchList = () => {
+    //     addToWatchList(movie.movieID, userID, 3, "");
+    // }
     const [mouseIn, setMouseIn] = useState(false);
     return (
 
@@ -37,7 +37,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                 />
             </Link>
             <h3>{movie.title}</h3>
-            <button className="quickAddBtn" onClick={quickAddToWatchList}>+ToWatch</button>
+            {/* <button className="quickAddBtn" onClick={quickAddToWatchList}>+ToWatch</button> */}
             <div className={mouseIn ? "movie-info" : " movie-info hidden"}>
                 <div className="additional-info" >
                     <p>{movie.release_date}</p>
