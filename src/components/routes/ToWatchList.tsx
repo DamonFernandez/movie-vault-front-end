@@ -3,23 +3,9 @@ import { useContext, useEffect, useState } from "react";
 import { APIContext } from "../APIContextProvider";
 // import "../../styles/";
 
-function ToWatchList({ }) {
+function ToWatchList({}) {
   const { apiKey, setApiKey } = useContext(APIContext);
   const [movies, setMovies] = useState([]);
-
-  // setApiKey("90c714fc3d83ff7917a843fa94111761d8ece19dc372f7b984d82eab596e2f50");
-
-  // DEF CHANGE THIS URL^^
-
-  // const { apiKey } = useContext(APIContext);
-  // console.log(apiKey);
-
-  // useEffect(() => {
-  //   // Set the API key only once when the component mounts
-  //   setApiKey(
-  //     "94e6b57ab67bcfb174c6be67e10beba1082b7bc5ae333469dab8a2a5771d2564"
-  //   );
-  // }, [setApiKey]);
 
   useEffect(() => {
     if (apiKey) {
@@ -27,22 +13,27 @@ function ToWatchList({ }) {
       retrieveMoviesToWatch(apiKey);
     }
   }, [apiKey]);
-  const URL =
-    `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey.apiKey}`;
+  const URL_FOR_TO_WATCH_LIST_ENTRIES = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey.apiKey}`;
 
   const retrieveMoviesToWatch = async (apiKey) => {
     try {
-      const response = await axios.get(URL, {
+      const response = await axios.get(URL_FOR_TO_WATCH_LIST_ENTRIES, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       setMovies(response.data);
+      // addMovieNamesToMoviesToWatchObj();
+
+      console.log("lOOK HJERE");
+
       console.log(movies);
     } catch (error) {
       console.error("Error occurred with request:", error);
     }
   };
+
   return (
     <main>
       <h2> To Watch List</h2>
@@ -62,7 +53,7 @@ function ToWatchList({ }) {
           </tr>
           {movies.map((movie) => (
             <tr key={movie.toWatchListID}>
-              <td>{movie.name}</td>
+              <td>{movie.title}</td>
               <td>{movie.priority}</td>
               <td>{movie.notes}</td>
             </tr>
