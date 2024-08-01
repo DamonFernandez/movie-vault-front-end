@@ -13,7 +13,7 @@ function LoginAndSignUp() {
   // Once it changes to not be a blank string, then route to the main page
   // Have not implmented yet though
 
-  function changeShowSignUpFlag(): void {
+  function changeShowSignUpFlag() {
     setShowSignUp(!showSignUp);
   }
 

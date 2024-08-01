@@ -1,17 +1,14 @@
 import "../styles/movie-card.css";
 import { useEffect, useState } from "react";
-import { Movie } from "../types";
+
 import { Link } from "react-router-dom";
 import { APIContext } from "./APIContextProvider";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import addToWatchList from "../modules/addToWatchList";
-interface MovieCardProps {
-    movie: Movie;
-}
 
-export default function MovieCard({ movie }: MovieCardProps) {
+
+export default function MovieCard({ movie }) {
     const navigate = useNavigate();
     const { apiKey, userID } = useContext(APIContext);
     const [added, setAdded] = useState(false);

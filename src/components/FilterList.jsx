@@ -1,4 +1,4 @@
-import { FilterListProps } from "../types";
+
 export default function FilterList({
   search,
   setSearch,
@@ -9,8 +9,8 @@ export default function FilterList({
   year,
   setYear,
   setSortBy,
-}: FilterListProps) {
-  const sortByGiven = (key: string) => () => {
+}) {
+  const sortByGiven = (key) => () => {
     console.log(key);
     setSortBy(key);
   };

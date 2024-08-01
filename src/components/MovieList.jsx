@@ -1,11 +1,9 @@
-import MovieCard from './MovieCard.tsx'
-import { Movie } from '../types.tsx'
-import "../styles/movie-list.css";
-interface MovieListProps {
-    movies: Movie[];
-}
+import MovieCard from './MovieCard.jsx'
 
-export default function MovieList({ movies }: MovieListProps) {
+import "../styles/movie-list.css";
+
+
+export default function MovieList({ movies }) {
     return (
         <div className="movie-list">
             {movies.map((movie) => (

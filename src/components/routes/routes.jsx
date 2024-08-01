@@ -1,10 +1,10 @@
-import Movies from "./Movies";
-import Movie from "../Movie";
+import Movies from "./Movies.jsx";
+import Movie from "../Movie.jsx";
 import LoginAndSignUp from "./LoginAndSignUpComponent";
 import CompletedWatchList from "./CompletedWatchList";
 import ToWatchList from "./ToWatchList";
 import Error from "./Error";
-import App from "../../App";
+import App from "../../App.jsx"
 
 const routes = [
     {

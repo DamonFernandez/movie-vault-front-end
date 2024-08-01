@@ -1,15 +1,10 @@
 import { useContext, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { APIContext } from "./APIContextProvider";
 import axios, { AxiosError } from "axios";
 import "../styles/Login.css";
 import { Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-interface FormInputs {
-  username: string;
-  password: string;
-}
 
 alert("use the following creds to login: username: test, password: test1234");
 
@@ -19,19 +14,19 @@ function Login() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm();
   const navigate = useNavigate();
-  const usernameValue: string = watch("username") ?? "";
-  const passwordValue: string = watch("password") ?? "";
+  const usernameValue = watch("username") ?? "";
+  const passwordValue = watch("password") ?? "";
   const { apiKey, setApiKey, userID, setUserID } = useContext(APIContext);
 
-  function updateApiKeyState(newApiKey: string, newUserID: number) {
+  function updateApiKeyState(newApiKey, newUserID) {
     console.log("Updating API key in context to:", newApiKey);
     setApiKey(newApiKey);
     setUserID(newUserID);
   }
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit = async (data) => {
     console.log("Form submitted", data);
     try {
       const resp = await requestApiKeyFromApi(data.username, data.password);
@@ -50,13 +45,13 @@ function Login() {
   };
 
   async function requestApiKeyFromApi(
-    username: string,
-    password: string
-  ): Promise<string> {
+    username,
+    password
+  ) {
     const URL = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/apikey?username=${username}&password=${password}`;
 
     try {
-      const response = await axios.get<string>(URL, {
+      const response = await axios.get(URL, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -67,7 +62,7 @@ function Login() {
       console.log(response.data);
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError;
+      const axiosError = error;
       console.log("Error occurred with request:");
       console.log(axiosError.response?.data);
       throw error;

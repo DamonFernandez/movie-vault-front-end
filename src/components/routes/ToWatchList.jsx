@@ -90,7 +90,9 @@ function ToWatchList({ }) {
         }
       );
 
+
       if (response.status === 200) {
+        console.log(response);
         console.log("Priority updated successfully");
         // Update local state
         setMovies(

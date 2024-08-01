@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import MovieList from "../MovieList.tsx";
-import FilterList from "../FilterList.tsx";
+import MovieList from "../MovieList";
+import FilterList from "../FilterList";
 
 import { useContext } from "react";
-import { Movie } from "../../types.tsx";
+
 import "../../styles/movies.css"
-import { Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { APIContext } from "../APIContextProvider.tsx";
+import { APIContext } from "../APIContextProvider.jsx";
 
 export default function Movies() {
     const navigate = useNavigate();
@@ -23,8 +22,8 @@ export default function Movies() {
     }, [apiContext.apiKey]);
     const LIMIT = 48;
 
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [movieList, setMovieList] = useState<Movie[]>([]);
+    const [movies, setMovies] = useState([]);
+    const [movieList, setMovieList] = useState([]);
     const [pagination, setPagination] = useState({
         page: 1,
         pageList: [1],
@@ -171,7 +170,7 @@ export default function Movies() {
         }
     };
 
-    const goToPage = (pageNumber: number) => {
+    const goToPage = (pageNumber) => {
         const newStartIndex = (pageNumber - 1) * LIMIT;
         const newEndIndex = pageNumber * LIMIT;
 

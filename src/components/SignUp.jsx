@@ -9,7 +9,7 @@ function SignUp() {
 
   console.log(errors);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data) => {
     console.log(data);
   };
 
