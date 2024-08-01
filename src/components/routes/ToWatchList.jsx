@@ -5,31 +5,81 @@ import { useNavigate } from "react-router-dom";
 // import "../../styles/";
 
 function ToWatchList({ }) {
-  const { apiKey, setApiKey } = useContext(APIContext);
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  today = yyyy + '-' + mm + '-' + dd;
+
+  const { apiKey, setApiKey, userID } = useContext(APIContext);
   const [movies, setMovies] = useState([]);
   const [sorted, setSorted] = useState(false);
   const [priorities, setPriorities] = useState({});
   const naviagte = useNavigate();
+
+  const addToCompletedList = async (toWatchListID, movieID, notes, date) => {
+    try {
+      const response = await axios.post(
+        `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/completedwatchlist/entries?x-api-key=${apiKey}`,
+        {
+          userID: userID,
+          movieID: movieID,
+          rating: 0,
+          notes: notes,
+          dateStarted: date,
+          dateLastWatched: date,
+          numOfTimesWatched: 1,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          },
+        }
+      );
+      if (response.status === 201) {
+        console.log("Added to completed list successfully");
+        console.log(response);
+        return toWatchListID;
+      } else {
+        console.error("Failed to add to completed list:", response);
+      }
+    } catch (error) {
+      console.error("Error adding to completed list:", error);
+    }
+  };
+
+
+  const deleteFromToWatchList = async (toWatchListID) => {
+    try {
+      const response = await axios.delete(
+        `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries/${toWatchListID}?x-api-key=${apiKey}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+
+        console.log("Deleted successfully");
+        console.log(response);
+        setMovies(movies.filter((movie) => movie.toWatchListID !== toWatchListID));
+        return toWatchListID;
+
+      } else {
+        console.error("Failed to delete:", response);
+      }
+    } catch (error) {
+      console.error("Error deleting:", error);
+    }
+  };
+
 
   const sortMoviesByPriority = (movies) => {
     movies.sort((a, b) => {
       return a.priority - b.priority;
     });
   };
-
-  // setApiKey("90c714fc3d83ff7917a843fa94111761d8ece19dc372f7b984d82eab596e2f50");
-
-  // DEF CHANGE THIS URL_TO_GET_TO_WATCH_LIST_ENTRIES^^
-
-  // const { apiKey } = useContext(APIContext);
-  // console.log(apiKey);
-
-  // useEffect(() => {
-  //   // Set the API key only once when the component mounts
-  //   setApiKey(
-  //     "94e6b57ab67bcfb174c6be67e10beba1082b7bc5ae333469dab8a2a5771d2564"
-  //   );
-  // }, [setApiKey]);
 
   useEffect(() => {
     if (apiKey) {
@@ -41,8 +91,6 @@ function ToWatchList({ }) {
   }, [apiKey, sorted]);
   const URL_TO_GET_TO_WATCH_LIST_ENTRIES = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey}`;
   const URL_TO_UPDATE_PRIORITY = `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries`;
-
-  // 3/3?x-api-key=`
 
   const retrieveMoviesToWatch = async (apiKey, sorted = false) => {
     try {
@@ -116,6 +164,8 @@ function ToWatchList({ }) {
       <table>
         <thead>
           <tr>
+            <th></th>
+            <th>Movie ID</th>
             <th>Movie Name</th>
             <th>Priority To Watch</th>
             <th>Notes</th>
@@ -124,6 +174,8 @@ function ToWatchList({ }) {
         <tbody>
           {movies.map((movie) => (
             <tr key={movie.toWatchListID}>
+              <td><button type="button" style={{ backgroundColor: "maroon" }} onClick={() => { deleteFromToWatchList(movie.toWatchListID) }}>x</button></td>
+              <td>{movie.toWatchListID}</td>
               <td>{movie.title}</td>
               <td>
                 <input
@@ -143,11 +195,17 @@ function ToWatchList({ }) {
                   Update Priority
                 </button>
               </td>
+              <td>
+                <button type="button" style={{ backgroundColor: "green" }}
+                  onClick={() => {
+                    addToCompletedList(deleteFromToWatchList(movie.toWatchListID), movie.movieID, movie.notes, today);
+                  }}>Completed</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </main>
+    </main >
   );
 }
 
