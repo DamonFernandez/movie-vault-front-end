@@ -4,7 +4,7 @@ import { APIContext } from "../APIContextProvider";
 import { useNavigate } from "react-router-dom";
 // import "../../styles/";
 
-function ToWatchList({}) {
+function ToWatchList({ }) {
   const { apiKey, setApiKey } = useContext(APIContext);
   const [movies, setMovies] = useState([]);
   const [sorted, setSorted] = useState(false);
