@@ -1,11 +1,20 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { APIContext } from "../APIContextProvider";
+import { useNavigate } from "react-router-dom";
 // import "../../styles/";
 
 function ToWatchList({ }) {
   const { apiKey, setApiKey } = useContext(APIContext);
   const [movies, setMovies] = useState([]);
+  const [sorted, setSorted] = useState(false);
+  const naviagte = useNavigate();
+
+  const sortMoviesByPriority = (movies) => {
+    movies.sort((a, b) => {
+      return a.priority - b.priority;
+    });
+  }
 
   // setApiKey("90c714fc3d83ff7917a843fa94111761d8ece19dc372f7b984d82eab596e2f50");
 
@@ -21,22 +30,29 @@ function ToWatchList({ }) {
   //   );
   // }, [setApiKey]);
 
+
   useEffect(() => {
     if (apiKey) {
       console.log(apiKey);
-      retrieveMoviesToWatch(apiKey);
+      retrieveMoviesToWatch(apiKey, sorted);
     }
-  }, [apiKey]);
+    else {
+      naviagte("/");
+    }
+  }, [apiKey, sorted]);
   const URL =
     `https://loki.trentu.ca/~vrajchauhan/3430/assn/cois-3430-2024su-a2-Blitzcranq/api/towatchlist/entries?x-api-key=${apiKey.apiKey}`;
 
-  const retrieveMoviesToWatch = async (apiKey) => {
+  const retrieveMoviesToWatch = async (apiKey, sorted = false) => {
     try {
       const response = await axios.get(URL, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      const respMovies = response.data;
+
+      sorted && sortMoviesByPriority(respMovies);
       setMovies(response.data);
       console.log(movies);
     } catch (error) {
@@ -46,6 +62,7 @@ function ToWatchList({ }) {
   return (
     <main>
       <h2> To Watch List</h2>
+      <button onClick={() => setSorted(!sorted)}>Sort by Priority</button>
       <table>
         <thead>
           <tr>
