@@ -7,7 +7,9 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
+    const quickAddToWatchList = () => {
 
+    }
     const [mouseIn, setMouseIn] = useState(false);
     return (
 
@@ -25,8 +27,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                 />
             </Link>
             <h3>{movie.title}</h3>
-            <button className="quickAddBtn">+ToWatch</button>
-            <button className="quickAddBtn">+Complete</button>
+            <button className="quickAddBtn" onClick={quickAddToWatchList}>+ToWatch</button>
             <div className={mouseIn ? "movie-info" : " movie-info hidden"}>
                 <div className="additional-info" >
                     <p>{movie.release_date}</p>
