@@ -2,13 +2,23 @@ import "../styles/movie-card.css";
 import { useEffect, useState } from "react";
 import { Movie } from "../types";
 import { Link } from "react-router-dom";
+import { APIContext } from "./APIContextProvider";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import addToWatchList from "../modules/addToWatchList";
 interface MovieCardProps {
     movie: Movie;
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
-    const quickAddToWatchList = () => {
+    const navigate = useNavigate();
+    const { apiKey, userID } = useContext(APIContext);
+    if (!apiKey) {
+        navigate("/");
+    }
 
+    const quickAddToWatchList = () => {
+        addToWatchList(movie.movieID, userID, 3, "");
     }
     const [mouseIn, setMouseIn] = useState(false);
     return (

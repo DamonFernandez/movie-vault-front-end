@@ -21,22 +21,23 @@ function Login() {
   const navigate = useNavigate();
   const usernameValue: string = watch("username") ?? "";
   const passwordValue: string = watch("password") ?? "";
-  const { apiKey, setApiKey } = useContext(APIContext);
+  const { apiKey, setApiKey, userID, setUserID } = useContext(APIContext);
 
 
   console.log(apiKey)
 
-  function updateApiKeyState(newApiKey: string) {
+  function updateApiKeyState(newApiKey: string, newUserID: number) {
     console.log("Updating API key in context to:", newApiKey);
     setApiKey(newApiKey);
+    setUserID(newUserID);
   }
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log("Form submitted", data);
     try {
-      const apiKey = await requestApiKeyFromApi(data.username, data.password);
-      updateApiKeyState(apiKey);
-      console.log("API key obtained:", apiKey);
+      const resp = await requestApiKeyFromApi(data.username, data.password);
+      updateApiKeyState(resp.apiKey, resp.userID);
+      console.log("API key obtained:", resp.apiKey);
       try {
         console.log("Redirecting to App page");
         navigate("/");

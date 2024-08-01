@@ -14,10 +14,11 @@ import { useContext, useState } from "react";
 
 function App() {
   const [apiKey, setApiKey] = useState("");
+  const [userID, setUserID] = useState("");
   // const apiKey = useContext(API_KEY);
   // console.log("API key in app:", apiKey);
   return (
-    <APIContext.Provider value={{ apiKey, setApiKey }}>
+    <APIContext.Provider value={{ apiKey, setApiKey, userID, setUserID }}>
       <NavBar />
       <Outlet />
     </APIContext.Provider>
